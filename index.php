@@ -10,6 +10,9 @@
     </head> 
        <body>
          <h1>Générateur de CV</h1>
-         
+         <h2>Un CV parfait en toute simplicité</h2>
+         <button>Crée un nouveau CV</button>
+
+         <script src="main.js"></script>
         </body> 
  </html>
