@@ -1,96 +1,233 @@
-<!DOCTYPE html> 
+<! DOCTYPE html> 
 <html lang="fr"> 
-    <head> 
-        <meta charset="UTF-8" /> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-        <title>Générateur de CV</title> 
-         <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    </head> 
-       <body>
-         <h1>Générateur de CV</h1>
+<head> 
+    <meta charset="UTF-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+    <title>Créer mon CV - Générateur de CV</title> 
+    
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    
+    <!-- CSS personnalisé -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-section {
+            background: white;
+            padding: 20px;
+            border-radius:  10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .cv-preview {
+            position: sticky;
+            top: 20px;
+            background: white;
+            padding: 40px;
+            border-radius:  10px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            min-height: 800px;
+        }
+        .cv-header {
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+        .cv-name {
+            color: #667eea;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .cv-title {
+            font-size: 1.3rem;
+            color: #6c757d;
+        }
+        .cv-section-title {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 5px;
+        }
+        .experience-item, .formation-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom:  1px dashed #dee2e6;
+        }
+        .cv-skills-list {
+            list-style: none;
+            padding: 0;
+        }
+        .cv-skill {
+            display:  inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            margin:  5px;
+            border-radius: 20px;
+            font-size:  0.9rem;
+        }
+    </style>
+</head>
+<body>
+   <body>
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- COLONNE GAUCHE :   FORMULAIRE -->
+            <div class="col-lg-6">
+                <h2 class="mb-4">✍️ Remplissez vos informations</h2>
+                
+                <form id="cvForm" method="POST" action="export.php">
+                    
+                    <!-- Section :   Informations personnelles -->
+                    <div class="form-section">
+                        <h4 class="section-title">👤 Informations personnelles</h4>
+                        
+                        <div class="mb-3">
+                            <label for="prenom" class="form-label">Prénom</label>
+                            <input type="text" class="form-control" id="prenom" name="prenom" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="nom" name="nom" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="titre" class="form-label">Titre professionnel</label>
+                            <input type="text" class="form-control" id="titre" name="titre" placeholder="Ex: Développeur Web Full Stack">
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="telephone" class="form-label">Téléphone</label>
+                                <input type="tel" class="form-control" id="telephone" name="telephone">
+                            </div>
+                        </div>
+                    </div>
 
-         <form action="" method="post">
-          <label for="prenom"></label>
-          <input type="text" >
-         </form>
-         <div id="cv-preview" class="cv-container p-4">
+                    <!-- Section :  Profil -->
+                    <div class="form-section">
+                        <h4 class="section-title">📝 Profil</h4>
+                        <div class="mb-3">
+                            <label for="profil" class="form-label">Résumé professionnel</label>
+                            <textarea class="form-control" id="profil" name="profil" rows="4" placeholder="Décrivez-vous en quelques lignes..."></textarea>
+                        </div>
+                    </div>
 
+                    <!-- Section :   Expériences -->
+                    <div class="form-section">
+                        <h4 class="section-title">💼 Expériences professionnelles</h4>
+                        <div id="experiences-container">
+                            <div class="experience-group mb-3">
+                                <input type="text" class="form-control mb-2" name="exp_poste[]" placeholder="Poste occupé">
+                                <input type="text" class="form-control mb-2" name="exp_entreprise[]" placeholder="Entreprise">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control mb-2" name="exp_debut[]" placeholder="Date début">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control mb-2" name="exp_fin[]" placeholder="Date fin">
+                                    </div>
+                                </div>
+                                <textarea class="form-control" name="exp_description[]" rows="2" placeholder="Description de vos missions..."></textarea>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="addExperience">+ Ajouter une expérience</button>
+                    </div>
 
-  <header class="cv-header mb-4">
-    <h1 id="cv-name" class="cv-name">Prénom Nom</h1>
-    <h2 id="cv-title" class="cv-title text-muted">Développeur Web</h2>
+                    <!-- Section :   Formations -->
+                    <div class="form-section">
+                        <h4 class="section-title">🎓 Formations</h4>
+                        <div id="formations-container">
+                            <div class="formation-group mb-3">
+                                <input type="text" class="form-control mb-2" name="form_diplome[]" placeholder="Diplôme">
+                                <input type="text" class="form-control mb-2" name="form_etablissement[]" placeholder="Établissement">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control mb-2" name="form_debut[]" placeholder="Date début">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control mb-2" name="form_fin[]" placeholder="Date fin">
+                                    </div>
+                                </div>
+                                <textarea class="form-control" name="form_description[]" rows="2" placeholder="Description..."></textarea>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="addFormation">+ Ajouter une formation</button>
+                    </div>
 
-    <div class="cv-contact">
-      <span id="cv-email" class="cv-email">mail.e@email.com</span><br>
-      <span id="cv-phone" class="cv-phone">06 00 00 00 00</span>
+                    <!-- Section :  Compétences -->
+                    <div class="form-section">
+                        <h4 class="section-title">🔧 Compétences</h4>
+                        <div class="mb-3">
+                            <label for="competences" class="form-label">Compétences (séparez par des virgules)</label>
+                            <input type="text" class="form-control" id="competences" name="competences" placeholder="HTML, CSS, JavaScript, PHP, MySQL">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg w-100">Générer mon CV en PDF 📄</button>
+                </form>
+            </div>
+
+            <!-- COLONNE DROITE :   PRÉVISUALISATION -->
+            <div class="col-lg-6">
+                <h2 class="mb-4">👁️ Aperçu en temps réel</h2>
+                <div class="cv-preview" id="cvPreview">
+                    
+                    <header class="cv-header">
+                        <h1 class="cv-name" id="preview-nom">Prénom Nom</h1>
+                        <h2 class="cv-title" id="preview-titre">Votre titre professionnel</h2>
+                        <div class="cv-contact mt-3">
+                            <span id="preview-email">email@exemple.com</span> | 
+                            <span id="preview-telephone">06 00 00 00 00</span>
+                        </div>
+                    </header>
+
+                    <section id="section-profil" style="display: none;">
+                        <h3 class="cv-section-title">Profil</h3>
+                        <p id="preview-profil"></p>
+                    </section>
+
+                    <section id="section-experiences">
+                        <h3 class="cv-section-title">Expériences professionnelles</h3>
+                        <div id="preview-experiences"><p class="text-muted">Aucune expérience ajoutée</p></div>
+                    </section>
+
+                    <section id="section-formations">
+                        <h3 class="cv-section-title">Formations</h3>
+                        <div id="preview-formations"><p class="text-muted">Aucune formation ajoutée</p></div>
+                    </section>
+
+                    <section id="section-competences" style="display: none;">
+                        <h3 class="cv-section-title">Compétences</h3>
+                        <ul class="cv-skills-list" id="preview-competences"></ul>
+                    </section>
+
+                </div>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <section id="cv-profile" class="cv-section mb-3">
-    <h3 class="cv-section-title">Profil</h3>
-    <p id="cv-summary" class="cv-summary">
-      Développeur web passionné avec une expérience en HTML, CSS, JavaScript et PHP.
-    </p>
-  </section>
-
-  <section id="cv-experiences" class="cv-section mb-3">
-    <h3 class="cv-section-title">Expériences professionnelles</h3>
-
-    <div class="cv-experience">
-      <div class="cv-experience-header">
-        <span class="cv-experience-job">Développeur Web</span>
-        <span class="cv-experience-company">WebAgency</span>
-      </div>
-
-      <div class="cv-experience-dates">
-        <span class="cv-experience-start">Janvier 2025</span>
-        <span class="cv-experience-end">Aujourd’hui</span>
-      </div>
-
-      <p class="cv-experience-description">
-        Création de sites web, intégration HTML/CSS, développement JavaScript.
-      </p>
-    </div>
-
-  </section>
-
-  <section id="cv-formations" class="cv-section mb-3">
-    <h3 class="cv-section-title">Formations</h3>
-
-    <div class="cv-formation">
-      <div class="cv-formation-header">
-        <span class="cv-formation-title">BTS SIO</span>
-        <span class="cv-formation-school"></span>
-      </div>
-
-      <div class="cv-formation-dates">
-        <span class="cv-formation-start"></span>
-        <span class="cv-formation-end"></span>
-      </div>
-
-      <p class="cv-formation-description">
-        Option SLAM, développement d’applications web.
-      </p>
-    </div>
-
-  </section>
-
-  <section id="cv-competences" class="cv-section mb-3">
-    <h3 class="cv-section-title">Compétences</h3>
-
-    <ul class="cv-skills-list">
-      <li class="cv-skill">HTML / CSS</li>
-      <li class="cv-skill">JavaScript</li>
-      <li class="cv-skill">PHP / MySQL</li>
-      <li class="cv-skill">Bootstrap</li>
-    </ul>
-  </section>
-
-</div>
-
-
-        </body> 
- </html>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap. bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

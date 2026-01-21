@@ -1,1 +1,0 @@
-document.getElementById("cv-name").textContent = inputNom.value;
