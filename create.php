@@ -9,77 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
     
     <!-- CSS personnalisé -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="Assets/css/style.css">
 </head>
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .form-section {
-            background: white;
-            padding: 20px;
-            border-radius:  10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .section-title {
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
-        }
-        .cv-preview {
-            position: sticky;
-            top: 20px;
-            background: white;
-            padding: 40px;
-            border-radius:  10px;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            min-height: 800px;
-        }
-        .cv-header {
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
-        }
-        .cv-name {
-            color: #667eea;
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        .cv-title {
-            font-size: 1.3rem;
-            color: #6c757d;
-        }
-        .cv-section-title {
-            color: #667eea;
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #dee2e6;
-            padding-bottom: 5px;
-        }
-        .experience-item, .formation-item {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom:  1px dashed #dee2e6;
-        }
-        .cv-skills-list {
-            list-style: none;
-            padding: 0;
-        }
-        .cv-skill {
-            display:  inline-block;
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            margin:  5px;
-            border-radius: 20px;
-            font-size:  0.9rem;
-        }
-    </style>
 </head>
 <body>
    <body>
@@ -228,6 +159,6 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap. bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="Assets/js/main.js"></script>
 </body>
 </html>
