@@ -1,0 +1,75 @@
+/* Styles pour le PDF généré */
+.body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    color: #333;
+}
+
+.cv-header {
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.cv-name {
+    color: #667eea;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.cv-title {
+    font-size: 18px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.cv-contact {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+.cv-section {
+    margin-bottom: 20px;
+}
+
+.cv-section-title {
+    color: #667eea;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.experience-item,
+.formation-item {
+    margin-bottom: 15px;
+}
+
+.item-header {
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.item-dates {
+    color: #666;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.cv-skills {
+    list-style: none;
+    padding: 0;
+}
+
+.cv-skill {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 5px 12px;
+    margin: 3px;
+    border-radius: 15px;
+    font-size: 12px;
+}
