@@ -14,7 +14,7 @@
         <h1> Générateur de CV</h1>
         <h2>Créez votre CV professionnel en quelques minutes</h2>
         <p class="text-muted mb-4">Simple, rapide et élégant</p>
-        <a href="create.php" class="btn btn-primary btn-lg">
+        <a href="cv.php" class="btn btn-primary btn-lg">
             Créer mon CV
         </a>
     </div>

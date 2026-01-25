@@ -1,6 +1,6 @@
-// Fonction pour mettre à jour la prévisualisation en temps réel
+
 function updatePreview() {
-    // Informations personnelles
+
     const prenom = document.getElementById('prenom')?.value || 'Prénom';
     const nom = document.getElementById('nom')?.value || 'Nom';
     const titre = document.getElementById('titre')?.value || 'Votre titre professionnel';
@@ -17,7 +17,7 @@ function updatePreview() {
     if (previewEmail) previewEmail.textContent = email;
     if (previewTelephone) previewTelephone.textContent = telephone;
 
-    // Profil
+
     const profil = document.getElementById('profil')?.value || '';
     const sectionProfil = document.getElementById('section-profil');
     const previewProfil = document.getElementById('preview-profil');
@@ -31,13 +31,13 @@ function updatePreview() {
         }
     }
 
-    // Expériences
+
     updateExperiences();
 
-    // Formations
+
     updateFormations();
 
-    // Compétences
+
     const competences = document.getElementById('competences')?.value || '';
     const sectionCompetences = document.getElementById('section-competences');
     const previewCompetences = document.getElementById('preview-competences');
@@ -55,7 +55,7 @@ function updatePreview() {
     }
 }
 
-// Mise à jour des expériences
+
 function updateExperiences() {
     const postes = document.querySelectorAll('input[name="exp_poste[]"]');
     const entreprises = document.querySelectorAll('input[name="exp_entreprise[]"]');
@@ -89,7 +89,7 @@ function updateExperiences() {
     previewExperiences.innerHTML = html || '<p class="text-muted">Aucune expérience ajoutée</p>';
 }
 
-// Mise à jour des formations
+
 function updateFormations() {
     const diplomes = document.querySelectorAll('input[name="form_diplome[]"]');
     const etablissements = document.querySelectorAll('input[name="form_etablissement[]"]');
@@ -123,7 +123,7 @@ function updateFormations() {
     previewFormations.innerHTML = html || '<p class="text-muted">Aucune formation ajoutée</p>';
 }
 
-// Ajouter une expérience
+
 function setupAddExperience() {
     const addBtn = document.getElementById('addExperience');
     if (!addBtn) return;
@@ -153,7 +153,7 @@ function setupAddExperience() {
     });
 }
 
-// Ajouter une formation
+
 function setupAddFormation() {
     const addBtn = document.getElementById('addFormation');
     if (!addBtn) return;
@@ -183,28 +183,28 @@ function setupAddFormation() {
     });
 }
 
-// Supprimer un élément et attacher les événements
+
 function attachEventListeners() {
-    // Écouter tous les inputs du formulaire
-    document.querySelectorAll('#cvForm input, #cvForm textarea').forEach(input => {
+
+    document.querySelectorAll('#cv.php input, #cv.php textarea').forEach(input => {
         input.removeEventListener('input', updatePreview);
         input.addEventListener('input', updatePreview);
     });
 
-    // Boutons de suppression
+
     document.querySelectorAll('. remove-item').forEach(btn => {
         btn.removeEventListener('click', handleRemove);
         btn.addEventListener('click', handleRemove);
     });
 }
 
-// Fonction pour supprimer un élément
+
 function handleRemove(e) {
     e.target.parentElement.remove();
     updatePreview();
 }
 
-// Initialiser les event listeners au chargement
+
 document.addEventListener('DOMContentLoaded', function () {
     setupAddExperience();
     setupAddFormation();

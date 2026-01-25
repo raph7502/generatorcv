@@ -1,136 +1,128 @@
 <?php
-require_once 'vendor/autoload.php';
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', 0);
+
+require __DIR__ . '/vendor/autoload.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-// Récupération des données du formulaire
-$prenom = $_POST['prenom'] ?? '';
-$nom = $_POST['nom'] ?? '';
-$titre = $_POST['titre'] ?? '';
-$email = $_POST['email'] ?? '';
-$telephone = $_POST['telephone'] ?? '';
-$profil = $_POST['profil'] ?? '';
+$options = new Options();
+$options->set('isRemoteEnabled', true);
+$options->set('defaultFont', 'Arial');
+$dompdf = new Dompdf($options);
 
-// Expériences
+
+$prenom = htmlspecialchars($_POST['prenom'] ?? '');
+$nom = htmlspecialchars($_POST['nom'] ?? '');
+$titre = htmlspecialchars($_POST['titre'] ?? '');
+$email = htmlspecialchars($_POST['email'] ?? '');
+$telephone = htmlspecialchars($_POST['telephone'] ?? '');
+$profil = htmlspecialchars($_POST['profil'] ?? '');
+
+$competences_raw = $_POST['competences'] ?? '';
+$competences = array_filter(array_map('trim', explode(',', $competences_raw)));
+
+
 $exp_postes = $_POST['exp_poste'] ?? [];
-$exp_entreprises = $_POST['exp_entreprise'] ?? [];
+$exp_entrs = $_POST['exp_entreprise'] ?? [];
 $exp_debuts = $_POST['exp_debut'] ?? [];
 $exp_fins = $_POST['exp_fin'] ?? [];
-$exp_descriptions = $_POST['exp_description'] ?? [];
+$exp_descs = $_POST['exp_description'] ?? [];
 
-// Formations
 $form_diplomes = $_POST['form_diplome'] ?? [];
-$form_etablissements = $_POST['form_etablissement'] ??  [];
+$form_etabs = $_POST['form_etablissement'] ?? [];
 $form_debuts = $_POST['form_debut'] ?? [];
-$form_fins = $_POST['form_fin'] ??  [];
-$form_descriptions = $_POST['form_description'] ?? [];
+$form_fins = $_POST['form_fin'] ?? [];
+$form_descs = $_POST['form_description'] ?? [];
 
-// Compétences
-$competences = $_POST['competences'] ?? '';
-$competences_array = array_filter(array_map('trim', explode(',', $competences)));
 
-// CHARGER LE CSS DEPUIS LE FICHIER
-$css = file_get_contents('Assets/css/export.css');
-
-// Construction du HTML pour le CV
-$html = '
+$html = "
 <!DOCTYPE html>
-<html lang="fr">
+<html lang='fr'>
 <head>
-    <meta charset="UTF-8">
-    <style>
-        ' . $css . '
-    </style>
+<meta charset='UTF-8'>
+<style>
+@page { margin: 0px; }
+body { margin: 0px; padding: 0px; font-family: Arial, sans-serif; background-color: #f5f1ed; }
+/* شريط جانبي ثابت لملء الصفحة لأسفلها */
+.sidebar-bg {
+position: fixed;
+top: 0; left: 0; bottom: 0;
+width: 30%; background-color: #b39090;
+z-index: -1;
+}
+
+.container { width: 100%; display: block; }
+
+.left-col { width: 30%; float: left; padding: 40px 20px; color: #333; box-sizing: border-box; }
+.right-col { width: 70%; float: left; padding: 40px 30px; box-sizing: border-box; }
+
+h1 { font-size: 26px; text-transform: uppercase; margin: 0; color: #333; }
+.job-title { font-size: 18px; color: #666; font-weight: bold; margin-bottom: 20px; }
+h3 { border-bottom: 2px solid #333; padding-bottom: 5px; text-transform: uppercase; font-size: 14px; margin-top: 25px; }
+
+p, li { font-size: 13px; line-height: 1.5; }
+ul { padding-left: 15px; }
+.date { font-size: 11px; font-weight: bold; color: #555; }
+.entry { margin-bottom: 15px; }
+.clearfix::after { content: ''; clear: both; display: table; }
+</style>
 </head>
 <body>
-    <div class="cv-header">
-        <h1 class="cv-name">' . htmlspecialchars($prenom . ' ' . $nom) . '</h1>
-        <div class="cv-title">' .  htmlspecialchars($titre) . '</div>
-        <div class="cv-contact">' . htmlspecialchars($email) . ' | ' . htmlspecialchars($telephone) . '</div>
-    </div>';
+<div class='sidebar-bg'></div>
 
-// Profil
-if (!empty($profil)) {
-    $html .= '
-    <div class="cv-section">
-        <h2 class="cv-section-title">Profil</h2>
-        <p>' .  nl2br(htmlspecialchars($profil)) . '</p>
-    </div>';
+<div class='container clearfix'>
+<div class='left-col'>
+<h3>👤 CONTACT</h3>
+<p><strong>Email:</strong><br>$email</p>
+<p><strong>Tel:</strong><br>$telephone</p>
+
+<h3>🔧 COMPÉTENCES</h3>
+<ul>";
+foreach ($competences as $skill) {
+$html .= "<li>" . htmlspecialchars($skill) . "</li>";
+}
+$html .= "</ul>
+</div>
+
+<div class='right-col'>
+<h1>$prenom $nom</h1>
+<div class='job-title'>$titre</div>
+
+<h3>📝 PROFIL</h3>
+<p>" . nl2br($profil) . "</p>
+
+<h3>💼 EXPÉRIENCES PROFESSIONNELLES</h3>";
+foreach ($exp_postes as $i => $poste) {
+if (!empty(trim($poste))) {
+$html .= "<div class='entry'>
+<strong>" . htmlspecialchars($poste) . "</strong> @ " . htmlspecialchars($exp_entrs[$i] ?? '') . "<br>
+<span class='date'>" . htmlspecialchars($exp_debuts[$i] ?? '') . " - " . htmlspecialchars($exp_fins[$i] ?? '') . "</span>
+<p>" . nl2br(htmlspecialchars($exp_descs[$i] ?? '')) . "</p>
+</div>";
+}
 }
 
-// Expériences
-if (! empty($exp_postes[0])) {
-    $html .= '
-    <div class="cv-section">
-        <h2 class="cv-section-title">Expériences professionnelles</h2>';
-    
-    for ($i = 0; $i < count($exp_postes); $i++) {
-        if (!empty($exp_postes[$i]) || !empty($exp_entreprises[$i])) {
-            $html .= '
-        <div class="experience-item">
-            <div class="item-header">' . htmlspecialchars($exp_postes[$i]) . ' - ' . htmlspecialchars($exp_entreprises[$i]) . '</div>
-            <div class="item-dates">' . htmlspecialchars($exp_debuts[$i]) . ' - ' . htmlspecialchars($exp_fins[$i]) . '</div>
-            <p>' . nl2br(htmlspecialchars($exp_descriptions[$i])) . '</p>
-        </div>';
-        }
-    }
-    
-    $html .= '
-    </div>';
+$html .= "<h3>🎓 FORMATIONS</h3>";
+foreach ($form_diplomes as $i => $diplome) {
+if (!empty(trim($diplome))) {
+$html .= "<div class='entry'>
+<strong>" . htmlspecialchars($diplome) . "</strong><br>
+" . htmlspecialchars($form_etabs[$i] ?? '') . " |
+<span class='date'>" . htmlspecialchars($form_debuts[$i] ?? '') . " - " . htmlspecialchars($form_fins[$i] ?? '') . "</span>
+<p>" . nl2br(htmlspecialchars($form_descs[$i] ?? '')) . "</p>
+</div>";
 }
-
-// Formations
-if (!empty($form_diplomes[0])) {
-    $html .= '
-    <div class="cv-section">
-        <h2 class="cv-section-title">Formations</h2>';
-    
-    for ($i = 0; $i < count($form_diplomes); $i++) {
-        if (!empty($form_diplomes[$i]) || !empty($form_etablissements[$i])) {
-            $html .= '
-        <div class="formation-item">
-            <div class="item-header">' . htmlspecialchars($form_diplomes[$i]) . ' - ' . htmlspecialchars($form_etablissements[$i]) . '</div>
-            <div class="item-dates">' . htmlspecialchars($form_debuts[$i]) . ' - ' . htmlspecialchars($form_fins[$i]) . '</div>
-            <p>' .  nl2br(htmlspecialchars($form_descriptions[$i])) . '</p>
-        </div>';
-        }
-    }
-    
-    $html .= '
-    </div>';
 }
-
-// Compétences
-if (!empty($competences_array)) {
-    $html .= '
-    <div class="cv-section">
-        <h2 class="cv-section-title">Compétences</h2>
-        <ul class="cv-skills">';
-    
-    foreach ($competences_array as $competence) {
-        $html .= '<li class="cv-skill">' . htmlspecialchars($competence) . '</li>';
-    }
-    
-    $html .= '
-        </ul>
-    </div>';
-}
-
-$html .= '
+$html .= "
+</div>
+</div>
 </body>
-</html>';
+</html>";
 
-// Configuration de Dompdf
-$options = new Options();
-$options->set('isHtml5ParserEnabled', true);
-$options->set('isRemoteEnabled', true);
 
-$dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-
-// Téléchargement du PDF
-$dompdf->stream("CV_" .  $prenom . "_" . $nom . ".pdf", ["Attachment" => true]);
-?>
+$dompdf->stream("CV_" . $nom . ".pdf", ["Attachment" => true]);

@@ -5,24 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
     <title>Créer mon CV - Générateur de CV</title> 
     
-    <!-- Bootstrap CDN -->
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
     
-    <!-- CSS personnalisé -->
+    
     <link rel="stylesheet" href="Assets/css/style.css">
 </head>
 </head>
-<body>
    <body>
     <div class="container-fluid py-4">
         <div class="row">
-            <!-- COLONNE GAUCHE :   FORMULAIRE -->
+            
             <div class="col-lg-6">
                 <h2 class="mb-4">✍️ Remplissez vos informations</h2>
                 
                 <form id="cvForm" method="POST" action="export.php">
                     
-                    <!-- Section :   Informations personnelles -->
+                    
                     <div class="form-section">
                         <h4 class="section-title">👤 Informations personnelles</h4>
                         
@@ -54,7 +53,7 @@
                         </div>
                     </div>
 
-                    <!-- Section :  Profil -->
+                   
                     <div class="form-section">
                         <h4 class="section-title">📝 Profil</h4>
                         <div class="mb-3">
@@ -63,7 +62,7 @@
                         </div>
                     </div>
 
-                    <!-- Section :   Expériences -->
+                    
                     <div class="form-section">
                         <h4 class="section-title">💼 Expériences professionnelles</h4>
                         <div id="experiences-container">
@@ -84,7 +83,7 @@
                         <button type="button" class="btn btn-sm btn-outline-primary" id="addExperience">+ Ajouter une expérience</button>
                     </div>
 
-                    <!-- Section :   Formations -->
+                    
                     <div class="form-section">
                         <h4 class="section-title">🎓 Formations</h4>
                         <div id="formations-container">
@@ -103,9 +102,10 @@
                             </div>
                         </div>
                         <button type="button" class="btn btn-sm btn-outline-primary" id="addFormation">+ Ajouter une formation</button>
+                        <button type="button" class="btn btn-danger btn-sm remove-experience" id="addFormation">🗑️ Supprimer</button>
                     </div>
 
-                    <!-- Section :  Compétences -->
+                    
                     <div class="form-section">
                         <h4 class="section-title">🔧 Compétences</h4>
                         <div class="mb-3">
@@ -114,13 +114,13 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-success btn-lg w-100">Générer mon CV en PDF 📄</button>
+                    <button type="submit" action="export.php" class="btn btn-success btn-lg w-100">Générer mon CV en PDF 📄</button>
                 </form>
             </div>
 
-            <!-- COLONNE DROITE :   PRÉVISUALISATION -->
+           
             <div class="col-lg-6">
-                <h2 class="mb-4">👁️ Aperçu en temps réel</h2>
+                <h2 class="mb-4">Aperçu en temps réel</h2>
                 <div class="cv-preview" id="cvPreview">
                     
                     <header class="cv-header">
@@ -157,7 +157,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="Assets/js/main.js"></script>
 </body>
